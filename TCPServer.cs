@@ -134,6 +134,9 @@ public class TCPServer : MonoBehaviour
             // Convert to a new position
             getNewDronePose(dataReceived);
 
+            // implementing checks to ensure only one message recieved
+            Debug.Log("$" + dataReceived + "!");
+
             // Respond with a message
             string serverResponse = "Accepted";
             byte[] serverResponseBytes = Encoding.UTF8.GetBytes(serverResponse);
@@ -145,32 +148,33 @@ public class TCPServer : MonoBehaviour
     // Convert a string to a Vector 3
     private void getNewDronePose(string msg)
     {
-        // split the items
-        // Debug.Log(msg);
-        string[] msgArray0 = msg.Split(',');
-        string[] msgArray1 = new string[7];
-        Array.Copy(msgArray0, 0, msgArray1, 0, 7);
-        if (msgArray1[6].Length > 14) {
-            // Debug.Log(msgArray1[6]);
-            int firstOccurence = msgArray1[6].IndexOf(".");
-            if (msgArray1[6].Substring(firstOccurence + 1).Contains(".")) {
-                int secondOccurence = msgArray1[6].Substring(firstOccurence + 1).IndexOf(".");
-                msgArray1[6] = msgArray1[6].Substring(0, secondOccurence);
-            }
-        }
-        // Debug.Log(string.Join(" . ", msgArray1));
+        // // split the items
+        // // Debug.Log(msg);
+        // string[] msgArray0 = msg.Split(',');
+        // string[] msgArray1 = new string[7];
+        // Array.Copy(msgArray0, 0, msgArray1, 0, 7);
+        // if (msgArray1[6].Length > 14) {
+        //     // Debug.Log(msgArray1[6]);
+        //     int firstOccurence = msgArray1[6].IndexOf(".");
+        //     if (msgArray1[6].Substring(firstOccurence + 1).Contains(".")) {
+        //         int secondOccurence = msgArray1[6].Substring(firstOccurence + 1).IndexOf(".");
+        //         msgArray1[6] = msgArray1[6].Substring(0, secondOccurence);
+        //     }
+        // }
+        // // Debug.Log(string.Join(" . ", msgArray1));
 
         
-        // foreach (string myMsg in msgArray) {
-        //     Debug.Log(myMsg);
-        // }
+        // // foreach (string myMsg in msgArray) {
+        // //     Debug.Log(myMsg);
+        // // }
 
+        string[] msgArray1 = msg.Split(',');
 
         // Store as a Vector3
         Vector3 newPosition = new Vector3(
             float.Parse(msgArray1[0]),
-            float.Parse(msgArray1[2]),
-            float.Parse(msgArray1[1]));
+            float.Parse(msgArray1[1]),
+            float.Parse(msgArray1[2]));
 
         // Get the new rotation
         Quaternion newRotation = new Quaternion(
